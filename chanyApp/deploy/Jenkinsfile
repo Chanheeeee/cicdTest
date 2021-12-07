@@ -1,0 +1,31 @@
+pipeline {
+  agent any
+
+  parameters {
+    booleanParam(name : 'BUILD_DOCKER_IMAGE', defaultValue : true, description : 'BUILD_DOCKER_IMAGE')
+    booleanParam(name : 'RUN_TEST', defaultValue : true, description : 'RUN_TEST')
+    booleanParam(name : 'PUSH_DOCKER_IMAGE', defaultValue : true, description : 'PUSH_DOCKER_IMAGE')
+    
+  }
+
+  environment {
+    REGION = "ap-northeast-2"
+  }
+
+  stages {
+    stage('============ Build Docker Image ============') {
+        when { 
+            expression { return params.BUILD_DOCKER_IMAGE } 
+        }
+        // agent { label 'build' }
+        steps {
+            echo "Stage Build"
+        }
+        post {
+            always {
+                echo "Stage Build - post "
+            }
+        }
+    }
+  }
+}
