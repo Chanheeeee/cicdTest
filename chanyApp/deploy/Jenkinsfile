@@ -13,6 +13,7 @@ pipeline {
   }
 
   stages {
+  
     stage('============ Build Docker Image ============') {
         when { 
             expression { return params.BUILD_DOCKER_IMAGE } 
@@ -20,6 +21,7 @@ pipeline {
         // agent { label 'build' }
         steps {
             echo "Stage Build"
+            echo "성공성공"
         }
         post {
             always {
@@ -27,5 +29,7 @@ pipeline {
             }
         }
     }
+    
+    
   }
 }
