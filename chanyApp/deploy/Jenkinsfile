@@ -1,14 +1,14 @@
 pipeline {
-  agent any
+  agent any //master, slave 구성 일단 없기에 any
 
-  parameters {
+  parameters { // 젠킨스 파이프라인 구동시에 넘겨받는 argument
     booleanParam(name : 'BUILD_DOCKER_IMAGE', defaultValue : true, description : 'BUILD_DOCKER_IMAGE')
     booleanParam(name : 'RUN_TEST', defaultValue : true, description : 'RUN_TEST')
     booleanParam(name : 'PUSH_DOCKER_IMAGE', defaultValue : true, description : 'PUSH_DOCKER_IMAGE')
     
   }
 
-  environment {
+  environment { // 전체 스테이지에서 접근가능한 환경변수
     REGION = "ap-northeast-2"
   }
 
@@ -18,14 +18,17 @@ pipeline {
         when { 
             expression { return params.BUILD_DOCKER_IMAGE } 
         }
-        // agent { label 'build' }
+       
         steps {
+          dir("${env.WORKSPACE}") {
+            sh 'docker build -t test:1 .'
+          }
             echo "Stage Build"
             echo "성공성공"
         }
         post {
             always {
-                echo "Stage Build - post "
+                echo " Docker Build Success "
             }
         }
     }
