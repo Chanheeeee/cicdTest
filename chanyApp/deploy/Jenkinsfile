@@ -12,10 +12,16 @@ pipeline {
     booleanParam(name : 'RUN_TEST', defaultValue : true, description : 'RUN_TEST')
     booleanParam(name : 'PUSH_DOCKER_IMAGE', defaultValue : true, description : 'PUSH_DOCKER_IMAGE')
     
+    string(name : 'AWS_ACCOUNT_ID', defaultValue : '900184409169', description : 'AWS_ACCOUNT_ID')
+    string(name : 'REPOSITORY_NAME', defaultValue : 'l23121-cicd-test', description : 'DOCKER_IMAGE_NAME')
+    string(name : 'REPOSITORY_TAG', defaultValue : 'v1', description : 'DOCKER_TAG')
+
   }
 
   environment { // 전체 스테이지에서 접근가능한 환경변수
     REGION = "ap-northeast-2"
+    ECR_REPOSITORY = "${params.AWS_ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com"
+    DOCKER_IMAGE = "${ECR_REPOSITORY}/${params.REPOSITORY_NAME}:${params.REPOSITORY_TAG}"
   }
 
   stages {
@@ -43,11 +49,46 @@ pipeline {
         steps {
           dir("${env.WORKSPACE}/chanyApp/deploy") { 
             sh 'ls'
-            sh 'docker build -t test:1 .'
+            sh 'docker build -t ${DOCKER_IMAGE} .' // -t test:1
           }
 
             echo "Stage Build"
             echo "성공성공"
+        }
+        post {
+            always {
+                echo " Docker Build Success "
+            }
+        }
+    }
+    
+    stage('============ Push Docker Image To ECR ============') {
+        when { 
+            expression { return params.PUSH_DOCKER_IMAGE } 
+        }
+       
+        steps {
+          echo "Stage Test"
+          sh ```
+          aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin ${ECR_REPOSITORY}
+             //docker tag l23121-cicd-test:latest 900184409169.dkr.ecr.ap-northeast-2.amazonaws.com/l23121-cicd-test:latest
+             docker push ${DOCKER_IMAGE}
+          ```
+        }
+        post {
+            always {
+                echo " Docker Build Success "
+            }
+        }
+    }
+    
+    stage('============ Deploy Workload ============') {
+        when { 
+            expression { return params.DEPLOY_WORKLOAD } 
+        }
+       
+        steps {
+          echo "Push Test"
         }
         post {
             always {
