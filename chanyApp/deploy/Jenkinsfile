@@ -21,7 +21,7 @@ pipeline {
        
         steps {
           dir("${env.WORKSPACE}") {
-            sh 'ls /var/lib/jenkins/workspace/demo_1207'
+            sh 'cd chanyApp/deploy'
             sh 'docker build -t test:1 .'
           }
             echo "Stage Build"
