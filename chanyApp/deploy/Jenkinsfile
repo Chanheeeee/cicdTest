@@ -21,7 +21,7 @@ pipeline {
        
         steps {
           //dir("${env.WORKSPACE}") { }
-            sh 'cd chanyApp/deploy'
+            sh 'cd /chanyApp/deploy'
             sh 'ls'
             sh 'docker build -t test:1 .'
           
