@@ -1,5 +1,11 @@
 pipeline {
   agent any //master, slave 구성 일단 없기에 any
+  
+  tools { 
+      maven 'Maven 3.3.9' 
+      jdk 'jdk8' 
+  }
+
 
   parameters { // 젠킨스 파이프라인 구동시에 넘겨받는 argument
     booleanParam(name : 'BUILD_DOCKER_IMAGE', defaultValue : true, description : 'BUILD_DOCKER_IMAGE')
@@ -13,6 +19,21 @@ pipeline {
   }
 
   stages {
+    
+   stage ('Initialize') {
+      steps {
+          sh '''
+              echo "PATH = ${PATH}"
+              echo "M2_HOME = ${M2_HOME}"
+          ''' 
+      }
+   }
+    
+   stage('============ Build Java ============') { 
+        steps { 
+           echo 'This is a minimal pipeline.' 
+        }
+    }
   
     stage('============ Build Docker Image ============') {
         when { 
