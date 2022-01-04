@@ -20,11 +20,11 @@ pipeline {
         }
        
         steps {
-          dir("${env.WORKSPACE}") {
+          //dir("${env.WORKSPACE}") { }
             sh 'cd chanyApp/deploy'
             sh 'ls'
-            sh 'docker build -t test:1 -f chanyApp/deploy/Dockerfile'
-          }
+            sh 'docker build -t test:1 .'
+          
             echo "Stage Build"
             echo "성공성공"
         }
