@@ -40,7 +40,7 @@ pipeline {
         steps {
                 echo 'This is a mvn build step for java code.' 
                 sh 'mvn -Dmaven.test.failure.ignore=true install' 
-            }
+            
             post {
                 success {
                     junit 'target/surefire-reports/**/*.xml' 
