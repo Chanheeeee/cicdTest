@@ -38,8 +38,13 @@ pipeline {
    stage('============ Build Java ============') { 
      
         steps {
-                echo 'This is a mvn build step for java code.' 
-                sh 'mvn -Dmaven.test.failure.ignore=true install' 
+          
+          
+           dir("${env.WORKSPACE}/chanyApp") { 
+              echo 'This is a mvn build step for java code.' 
+              sh 'mvn -Dmaven.test.failure.ignore=true install' 
+           }
+
             
             post {
                 success {
