@@ -42,7 +42,7 @@ pipeline {
           
            dir("${env.WORKSPACE}/chanyApp") { 
               echo 'This is a mvn build step for java code.' 
-              sh 'mvn -Dmaven.test.failure.ignore=true install' 
+              sh 'mvn -B -DskipTests clean package' 
            }
 
             
