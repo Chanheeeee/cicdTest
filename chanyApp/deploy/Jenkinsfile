@@ -28,10 +28,10 @@ pipeline {
     
    stage ('Initialize') {
       steps {
-          sh ```
+          sh '''
               echo "PATH = ${PATH}"
               echo "MAVEN_HOME = ${MAVEN_HOME}"
-          ```
+'''
       }
    }
     
@@ -69,11 +69,11 @@ pipeline {
        
         steps {
           echo "Stage Test"
-          sh ```
+          sh '''
           aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin ${ECR_REPOSITORY}
              //docker tag l23121-cicd-test:latest 900184409169.dkr.ecr.ap-northeast-2.amazonaws.com/l23121-cicd-test:latest
              docker push ${DOCKER_IMAGE}
-          ```
+ '''
         }
         post {
             always {
