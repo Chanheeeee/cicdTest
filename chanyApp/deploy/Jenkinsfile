@@ -44,13 +44,6 @@ pipeline {
               echo 'This is a mvn build step for java code.' 
               sh 'mvn -B -DskipTests clean package' 
            }
-
-            
-            post {
-                success {
-                    //junit 'target/surefire-reports/**/*.xml' 
-                }
-            }
         }
     }
   
