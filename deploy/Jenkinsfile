@@ -76,8 +76,7 @@ pipeline {
         steps {
           echo "Stage Test"
           sh '''
-          aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin ${ECR_REPOSITORY}
-             //docker tag l23121-cicd-test:latest 900184409169.dkr.ecr.ap-northeast-2.amazonaws.com/l23121-cicd-test:latest
+             aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin ${ECR_REPOSITORY}
              docker push ${DOCKER_IMAGE}
  '''
         }
