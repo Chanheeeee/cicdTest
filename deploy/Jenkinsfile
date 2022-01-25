@@ -104,7 +104,7 @@ pipeline {
                         docker pull ${DOCKER_IMAGE}; \
      
                         docker ps -q --filter name=test-chany | grep -q . && docker stop test-chany && docker rm test-chany; \
-                        docker run -d -p 8080:80 --name test-chany ${DOCKER_IMAGE};'
+                        docker run -d -p 8081:8080 --name test-chany ${DOCKER_IMAGE};'
                         
                         
                          
