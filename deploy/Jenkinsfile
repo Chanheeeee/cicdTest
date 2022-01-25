@@ -112,9 +112,9 @@ pipeline {
               }
           }
      
-    }
-    
-    
+    }       
+  }
+      
  post {
    
     success {
@@ -133,7 +133,5 @@ pipeline {
       )
     }
   }
-   
-           
-  }
+  
 }
