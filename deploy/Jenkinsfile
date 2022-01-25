@@ -113,6 +113,26 @@ pipeline {
           }
      
     }
+    
+    
+ post {
+   
+    success {
+      slackSend(
+        channel: "#jenkins-demo-test",
+        color: "good",
+        message: "[Successful] Job:${env.JOB_NAME}, Build num:#${env.BUILD_NUMBER} @channel (<${env.RUN_DISPLAY_URL}|open job detail>)"
+      )
+    }
+   
+    failure {
+      slackSend(
+        channel: "#jenkins-demo-test",
+        color: "danger",
+        message: "[Failed] Job:${env.JOB_NAME}, Build num:#${env.BUILD_NUMBER} @channel (<${env.RUN_DISPLAY_URL}|open job detail>)"
+      )
+    }
+  }
    
            
   }
