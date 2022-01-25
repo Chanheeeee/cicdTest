@@ -101,7 +101,12 @@ pipeline {
                     ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no \
                         ${params.TARGET_SVR_USER}@${params.TARGET_SVR} \
                         'aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin ${ECR_REPOSITORY}; \
-                        docker pull ${DOCKER_IMAGE}';
+                        docker pull ${DOCKER_IMAGE}; \
+     
+                        docker ps -q --filter name=test-chany | grep -q . && docker stop test-chany && docker rm test-chany; \
+                        docker run -d -p 8080:80 --name test-chany ${DOCKER_IMAGE};'
+                        
+                        
                          
  """
               }
