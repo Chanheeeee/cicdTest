@@ -15,6 +15,11 @@ pipeline {
     string(name : 'AWS_ACCOUNT_ID', defaultValue : '900184409169', description : 'AWS_ACCOUNT_ID')
     string(name : 'REPOSITORY_NAME', defaultValue : 'l23121-cicd-test', description : 'DOCKER_IMAGE_NAME')
     string(name : 'REPOSITORY_TAG', defaultValue : 'v1', description : 'DOCKER_TAG')
+    
+    // CD
+    string(name : 'TARGET_SVR_USER', defaultValue : 'ec2-user', description : 'TARGET_SVR_USER')
+    string(name : 'TARGET_SVR_PATH', defaultValue : '/home/ec2-user/', description : 'TARGET_SVR_PATH'
+    string(name : 'TARGET_SVR', defaultValue : '20.0.1.233', description : 'TARGET_SVR')
 
   }
 
@@ -87,21 +92,26 @@ pipeline {
         }
     }
     
-    stage('============ Deploy Workload ============') {
-        when { 
-            expression { return params.DEPLOY_WORKLOAD } 
-        }
-       
+
+    stage('============ Deploy workload ============') {
+        when { expression { return params.DEPLOY_WORKLOAD } }
         steps {
-          echo "Push Test"
-        }
-        post {
-            always {
-                echo " Docker Build Success "
-            }
-        }
+            sshagent (credentials: ['aws-l23121-ssh']) {
+                sh """#!/bin/bash
+                    ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no \
+                        ${params.TARGET_SVR_USER}@${params.TARGET_SVR} \
+                        'aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin ${ECR_REPOSITORY}; \
+                         export IMAGE=${ECR_DOCKER_IMAGE}; \
+                         export TAG=${ECR_DOCKER_TAG}; \
+                         docker pull ${DOCKER_IMAGE}
+                         
+                """
+              }
+          }
+      }
     }
     
-    
+   
+           
   }
 }
