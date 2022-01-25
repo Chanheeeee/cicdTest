@@ -100,8 +100,8 @@ pipeline {
                 sh '''#!/bin/bash
                     ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no \
                         ${params.TARGET_SVR_USER}@${params.TARGET_SVR} \
-                        'aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin ${ECR_REPOSITORY}; \
-                         docker pull ${DOCKER_IMAGE}
+                        aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin ${ECR_REPOSITORY}; \
+                        docker pull ${DOCKER_IMAGE};
                          
  '''
               }
