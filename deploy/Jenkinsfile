@@ -94,7 +94,7 @@ pipeline {
     
 
     stage('============ Deploy workload ============') {
-        when { expression { return params.DEPLOY_WORKLOAD } }
+        //when { expression { return params.DEPLOY_WORKLOAD } }
         steps {
             sshagent (credentials: ['aws-l23121-ssh']) {
                 sh """#!/bin/bash
